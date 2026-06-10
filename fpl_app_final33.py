@@ -16,6 +16,9 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ── Owner shortcut : entrer 1 charge directement cette team ──
+OWNER_ID = 2999747
+
 # --- 0. CONFIGURATION RESEAU ROBUSTE (Anti-Crash) ---
 def create_session():
     session = requests.Session()
@@ -635,12 +638,17 @@ if page == "📊 Analyse Stratégique":
 elif page == "👤 Ma Team":
     st.sidebar.markdown("---")
     st.sidebar.subheader("🆔 Ton ID FPL")
-    team_id_input = st.sidebar.text_input(
+    _team_id_raw = st.sidebar.number_input(
         "Entre ton Team ID :",
-        placeholder="ex: 1234567",
-        help="Visible dans l'URL de ton profil FPL : fantasy.premierleague.com/entry/XXXXXXX/info"
+        min_value=1, max_value=99999999,
+        value=1, step=1, format="%d",
+        help="Entre 1 pour accès owner direct"
     )
-    st.sidebar.info("💡 Trouve ton ID sur : fantasy.premierleague.com → Mon Équipe → URL")
+    team_id_input = OWNER_ID if int(_team_id_raw) == 1 else int(_team_id_raw)
+    if team_id_input == OWNER_ID:
+        st.sidebar.success("👑 Owner connecté")
+    else:
+        st.sidebar.info("💡 Trouve ton ID sur : fantasy.premierleague.com → Mon Équipe → URL")
 
 elif page == "🔮 Prédictions xP":
     st.sidebar.markdown("---")
@@ -808,34 +816,15 @@ elif page == "👤 Ma Team":
 
     st.title("👤 Ma Team FPL")
 
-    if not team_id_input:
-        # ── Écran d'accueil quand pas d'ID entré ──
-        st.markdown("""
-        ## Bienvenue dans ton espace personnel 🎯
-
-        Entre ton **Team ID FPL** dans la barre de gauche pour accéder à :
-
-        | Feature | Description |
-        |---|---|
-        | 📊 **KPIs personnels** | Points totaux, rank global, valeur équipe |
-        | 📈 **Graphe de progression** | Évolution de tes points GW par GW |
-        | 🪑 **Points perdus sur le banc** | Combien de points tu as laissé partir |
-        | ⚽ **Mon équipe analysée** | Tes 15 joueurs avec leurs scores XGCDC/Score_Off |
-        | 🔄 **Historique des transferts** | Tous tes achats/ventes avec P&L |
-
-        ---
-        ### 🔍 Où trouver mon Team ID ?
-
-        1. Va sur **fantasy.premierleague.com**
-        2. Clique sur **"Points"** dans le menu
-        3. Regarde l'URL : `fantasy.premierleague.com/entry/**1234567**/event/32`
-        4. Le numéro en gras = ton Team ID
-        """)
-
+    # team_id_input est toujours un int résolu (1 → OWNER_ID via sidebar)
+    if team_id_input == OWNER_ID:
+        st.caption(f"👑 Owner — Team ID : {OWNER_ID}")
     else:
-        # ── Chargement des données ──
-        with st.spinner(f"Chargement de la team {team_id_input}..."):
-            info, history, picks_data, transfers, current_gw = load_my_team(int(team_id_input))
+        st.caption(f"Team ID : {team_id_input}")
+
+    # ── Chargement des données ──
+    with st.spinner(f"Chargement de la team {team_id_input}..."):
+        info, history, picks_data, transfers, current_gw = load_my_team(team_id_input)
 
         if info is None:
             st.error("❌ Team ID introuvable. Vérifie le numéro et réessaie.")
@@ -1272,16 +1261,19 @@ elif page == "🔄 Transferts":
     st.caption("Basé sur les prédictions V6 · Identifie les 3 joueurs les moins performants et suggère des remplaçants.")
 
     # ── BLOC A : Team ID ──
-    team_id_tr = st.number_input(
+    team_id_tr_raw = st.number_input(
         "Ton Team ID FPL", min_value=1, max_value=99999999,
         value=int(st.session_state.get('tr_last_id', 1)),
         step=1, format="%d",
-        help="Visible dans l'URL : fantasy.premierleague.com/entry/XXXXXXX/"
+        help="Entre 1 pour accès owner direct"
     )
+    team_id_tr = OWNER_ID if int(team_id_tr_raw) == 1 else int(team_id_tr_raw)
+    if team_id_tr == OWNER_ID:
+        st.info(f"👑 Owner connecté — Team ID : {OWNER_ID}")
 
     if st.button("🔍 Analyser mon équipe et suggérer des transferts", key="btn_tr_analyze"):
-        st.session_state['tr_last_id'] = int(team_id_tr)
-        st.session_state['tr_analyzed_id'] = int(team_id_tr)
+        st.session_state['tr_last_id'] = int(team_id_tr_raw)
+        st.session_state['tr_analyzed_id'] = team_id_tr
 
     analyzed_id = st.session_state.get('tr_analyzed_id', None)
 
