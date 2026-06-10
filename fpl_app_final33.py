@@ -809,20 +809,18 @@ if page == "📊 Analyse Stratégique":
 
 
 # ============================================================
-# --- 4. PAGE : MA TEAM (nouvelle page) ---
+# --- 4. PAGE : MA TEAM V2 ---
 # ============================================================
 
 elif page == "👤 Ma Team":
 
     st.title("👤 Ma Team FPL")
 
-    # team_id_input est toujours un int résolu (1 → OWNER_ID via sidebar)
     if team_id_input == OWNER_ID:
         st.caption(f"👑 Owner — Team ID : {OWNER_ID}")
     else:
         st.caption(f"Team ID : {team_id_input}")
 
-    # ── Chargement des données ──
     with st.spinner(f"Chargement de la team {team_id_input}..."):
         info, history, picks_data, transfers, current_gw = load_my_team(team_id_input)
 
@@ -830,137 +828,270 @@ elif page == "👤 Ma Team":
             st.error("❌ Team ID introuvable. Vérifie le numéro et réessaie.")
             st.stop()
 
-        # ── HEADER MANAGER ──
+        # ── 1. HEADER + KPIs ──
         st.header(f"🏟️ {info.get('name', 'Mon Équipe')}  —  {info.get('player_first_name', '')} {info.get('player_last_name', '')}")
-
-        # ── KPIs ──
         k1, k2, k3, k4 = st.columns(4)
-        k1.metric(
-            "🏆 Points Total",
-            f"{info.get('summary_overall_points', 0):,}"
-        )
-        k2.metric(
-            "🌍 Rank Global",
-            f"#{info.get('summary_overall_rank', 0):,}"
-        )
-        k3.metric(
-            f"⚡ Points GW{current_gw}",
-            info.get('summary_event_points', 0)
-        )
-        k4.metric(
-            "💰 Valeur Équipe",
-            f"{info.get('last_deadline_value', 0) / 10:.1f} M£"
-        )
+        k1.metric("🏆 Points Total", f"{info.get('summary_overall_points', 0):,}")
+        k2.metric("🌍 Rank Global", f"#{info.get('summary_overall_rank', 0):,}")
+        k3.metric(f"⚡ Points GW{current_gw}", info.get('summary_event_points', 0))
+        k4.metric("💰 Valeur Équipe", f"{info.get('last_deadline_value', 0) / 10:.1f} M£")
 
         st.markdown("---")
 
-        # ── GRAPHES HISTORIQUE ──
+        # ── 2. ÉVOLUTION RANK GLOBAL ──
         if history and history.get('current'):
             df_hist = pd.DataFrame(history['current'])
-
-            col_g1, col_g2 = st.columns(2)
-
-            with col_g1:
-                # Graphe points par GW
-                fig_pts = px.bar(
-                    df_hist, x='event', y='points',
-                    title="📊 Points par Gameweek",
-                    labels={'event': 'Gameweek', 'points': 'Points'},
-                    color='points',
-                    color_continuous_scale=['#d62728', '#ff7f0e', '#2ca02c']
-                )
-                # Ajouter les chips utilisés
-                for chip in history.get('chips', []):
-                    fig_pts.add_vline(
-                        x=chip['event'],
-                        line_dash="dash",
-                        line_color="purple",
-                        annotation_text=chip['name'].upper(),
-                        annotation_font_color="purple"
-                    )
-                fig_pts.update_coloraxes(showscale=False)
-                st.plotly_chart(fig_pts, use_container_width=True)
-
-            with col_g2:
-                # Graphe rank global
-                fig_rank = px.line(
-                    df_hist, x='event', y='overall_rank',
-                    title="📈 Évolution Rank Global",
-                    labels={'event': 'Gameweek', 'overall_rank': 'Rank'},
-                    markers=True
-                )
-                fig_rank.update_yaxes(autorange="reversed")  # Rang plus bas = meilleur
-                fig_rank.update_traces(line_color='#1f77b4', marker_color='#1f77b4')
-                st.plotly_chart(fig_rank, use_container_width=True)
-
-            # Points perdus sur le banc
-            total_bench_pts = df_hist['points_on_bench'].sum()
-            fig_bench = px.bar(
-                df_hist, x='event', y='points_on_bench',
-                title=f"🪑 Points laissés sur le banc (Total saison : {total_bench_pts} pts perdus)",
-                labels={'event': 'Gameweek', 'points_on_bench': 'Points banc'},
-                color='points_on_bench',
-                color_continuous_scale=['#2ca02c', '#ff7f0e', '#d62728']
+            fig_rank = px.line(
+                df_hist, x='event', y='overall_rank',
+                title="📈 Évolution Rank Global",
+                labels={'event': 'Gameweek', 'overall_rank': 'Rank'},
+                markers=True
             )
-            fig_bench.update_coloraxes(showscale=False)
-            st.plotly_chart(fig_bench, use_container_width=True)
-
-            # Chips utilisés
-            if history.get('chips'):
-                st.subheader("🃏 Chips utilisés")
-                df_chips = pd.DataFrame(history['chips'])
-                df_chips.columns = ['Gameweek', 'Chip']
-                st.dataframe(df_chips, hide_index=True)
+            fig_rank.update_yaxes(autorange="reversed")
+            fig_rank.update_traces(line_color='#1f77b4', marker_color='#1f77b4')
+            st.plotly_chart(fig_rank, use_container_width=True)
 
         st.markdown("---")
 
-        # ── MON ÉQUIPE ACTUELLE ──
-        st.subheader(f"⚽ Mon Équipe — GW{current_gw}")
-
+        # ── Chargement squad + xP V6 ──
         if picks_data and not df_players.empty:
             df_my_team, entry_hist = enrich_picks_with_scores(picks_data, df_players)
 
-            # Budget info
             b1, b2, b3 = st.columns(3)
             b1.info(f"💰 Valeur équipe : **{entry_hist.get('value', 0) / 10:.1f} M£**")
             b2.info(f"🏦 En banque : **{entry_hist.get('bank', 0) / 10:.1f} M£**")
             b3.info(f"⚡ Points cette GW : **{entry_hist.get('points', 0)} pts**")
 
             if not df_my_team.empty:
+
+                # Enrichissement xP V6
+                def _strip(n):
+                    return str(n).replace(" ©", "").replace(" V©", "").strip()
+
+                df_v6_mt = None
+                try:
+                    df_v6_mt, _ = get_xp_predictions()
+                except Exception:
+                    pass
+
+                if df_v6_mt is not None and not df_v6_mt.empty:
+                    _v6idx = df_v6_mt.set_index('name')[
+                        ['xP_GW1', 'xP_GW2', 'chance_of_playing', 'fdr_next', 'opp_name']
+                    ].to_dict('index')
+                    df_my_team['xP+1']   = df_my_team['Joueur'].apply(lambda n: _v6idx.get(_strip(n), {}).get('xP_GW1', None))
+                    df_my_team['xP+2']   = df_my_team['Joueur'].apply(lambda n: _v6idx.get(_strip(n), {}).get('xP_GW2', None))
+                    df_my_team['_chance'] = df_my_team['Joueur'].apply(lambda n: _v6idx.get(_strip(n), {}).get('chance_of_playing', 100))
+                    df_my_team['_fdr']   = df_my_team['Joueur'].apply(lambda n: _v6idx.get(_strip(n), {}).get('fdr_next', 3))
+                    df_my_team['_opp']   = df_my_team['Joueur'].apply(lambda n: _v6idx.get(_strip(n), {}).get('opp_name', '?'))
+                else:
+                    df_my_team['xP+1']   = None
+                    df_my_team['xP+2']   = None
+                    df_my_team['_chance'] = 100
+                    df_my_team['_fdr']   = 3
+                    df_my_team['_opp']   = '?'
+
+                _reg_emoji = {
+                    "1. Titulaire Fixe": "🟢", "2. Temps élevé": "🔵",
+                    "3. Rotation": "🟡", "4. Faible": "🔴"
+                }
+                df_my_team['État'] = df_my_team['Régularité'].map(_reg_emoji).fillna("⚪")
+
                 starters = df_my_team[df_my_team['Titulaire']].copy()
                 bench    = df_my_team[~df_my_team['Titulaire']].copy()
 
-                color_map_reg = {
-                    "1. Titulaire Fixe": "🟢",
-                    "2. Temps élevé": "🔵",
-                    "3. Rotation": "🟡",
-                    "4. Faible": "🔴"
-                }
-                for df_sub in [starters, bench]:
-                    df_sub['État'] = df_sub['Régularité'].map(color_map_reg).fillna("⚪")
+                # ── 3. CAPITAINE SUGGÉRÉ ──
+                st.subheader("⚽ Capitaine suggéré — cette GW")
+                _starters_xp = starters[starters['xP+1'].notna()].copy()
+                if not _starters_xp.empty:
+                    _starters_xp['_cap_score'] = _starters_xp.apply(
+                        lambda r: float(r['xP+1']) * 2.0 * (float(r['_chance']) / 100.0), axis=1
+                    )
+                    _cap_sorted = _starters_xp.sort_values('_cap_score', ascending=False).reset_index(drop=True)
+                    _cap  = _cap_sorted.iloc[0]
+                    _vice = _cap_sorted.iloc[1] if len(_cap_sorted) > 1 else None
 
-                # Colonnes à afficher
-                cols_show = ['Joueur', 'Pos', 'Equipe', 'Prix', 'Score_Off', 'XGCDC', 'N4DS', 'État']
+                    _col_cap, _col_vice = st.columns(2)
+                    with _col_cap:
+                        st.success(
+                            f"**🥇 {_strip(_cap['Joueur'])}**\n\n"
+                            f"xP × 2 : **{float(_cap['xP+1']) * 2:.1f} pts**\n\n"
+                            f"{_cap['Equipe']} vs {_cap['_opp']} — FDR : {_cap['_fdr']}\n\n"
+                            f"Dispo : {int(float(_cap['_chance']))}%"
+                        )
+                    if _vice is not None:
+                        with _col_vice:
+                            st.info(
+                                f"**🥈 {_strip(_vice['Joueur'])}**\n\n"
+                                f"xP × 2 : **{float(_vice['xP+1']) * 2:.1f} pts**\n\n"
+                                f"{_vice['Equipe']} vs {_vice['_opp']} — FDR : {_vice['_fdr']}\n\n"
+                                f"Dispo : {int(float(_vice['_chance']))}%"
+                            )
+                    st.caption("Basé sur xP V6 — parmi tes 11 titulaires")
+                else:
+                    st.info("xP V6 non disponible pour le calcul du capitaine.")
+
+                st.markdown("---")
+
+                # ── 4. PITCH VIEW ──
+                try:
+                    _pos_counts = starters['Pos'].value_counts()
+                    _formation  = f"{int(_pos_counts.get('DEF',0))}-{int(_pos_counts.get('MID',0))}-{int(_pos_counts.get('FWD',0))}"
+
+                    fig_pitch = go.Figure()
+
+                    # Fond + bordure
+                    fig_pitch.add_shape(type="rect", x0=0, y0=0, x1=100, y1=100,
+                                        fillcolor="#1a5c2a", line=dict(color="white", width=2))
+                    # Ligne médiane
+                    fig_pitch.add_shape(type="line", x0=0, y0=50, x1=100, y1=50,
+                                        line=dict(color="white", width=1.5))
+                    # Cercle central
+                    fig_pitch.add_shape(type="circle", x0=41, y0=44, x1=59, y1=56,
+                                        line=dict(color="white", width=1.5))
+                    # Surfaces de réparation
+                    fig_pitch.add_shape(type="rect", x0=18, y0=0, x1=82, y1=18,
+                                        line=dict(color="white", width=1.5))
+                    fig_pitch.add_shape(type="rect", x0=18, y0=82, x1=82, y1=100,
+                                        line=dict(color="white", width=1.5))
+                    # Buts
+                    fig_pitch.add_shape(type="rect", x0=38, y0=0, x1=62, y1=5,
+                                        line=dict(color="white", width=1.5))
+                    fig_pitch.add_shape(type="rect", x0=38, y0=95, x1=62, y1=100,
+                                        line=dict(color="white", width=1.5))
+
+                    def _dot_color(xp_val):
+                        if xp_val is None:
+                            return '#888888'
+                        v = float(xp_val)
+                        return '#00ff87' if v >= 6.0 else ('#ffbe0b' if v >= 3.0 else '#ff006e')
+
+                    _pos_y = {'GKP': 90, 'DEF': 70, 'MID': 48, 'FWD': 22}
+
+                    for _pg in ['GKP', 'DEF', 'MID', 'FWD']:
+                        _grp = starters[starters['Pos'] == _pg].reset_index(drop=True)
+                        if _grp.empty:
+                            continue
+                        _n = len(_grp)
+                        _yv = _pos_y[_pg]
+                        _xs = [100 * (i + 1) / (_n + 1) for i in range(_n)]
+
+                        for _ei, (_, _rp) in enumerate(_grp.iterrows()):
+                            _xp1 = _rp['xP+1']
+                            _xp2 = _rp['xP+2']
+                            _dc  = _dot_color(_xp1)
+                            _s1  = f"{float(_xp1):.1f}" if _xp1 is not None else "N/A"
+                            _s2  = f"{float(_xp2):.1f}" if _xp2 is not None else "N/A"
+                            _is_cap = bool(_rp.get('Capitaine', False))
+                            _sname  = _strip(_rp['Joueur']).split()[-1][:9]
+                            _label  = f"{_sname} {'⭐' if _is_cap else ''}<br>{_s1}".strip()
+
+                            fig_pitch.add_trace(go.Scatter(
+                                x=[_xs[_ei]], y=[_yv],
+                                mode='markers',
+                                marker=dict(color=_dc, size=32,
+                                            line=dict(color='white', width=2)),
+                                name=_strip(_rp['Joueur']),
+                                hovertemplate=(
+                                    f"<b>{_strip(_rp['Joueur'])}</b><br>"
+                                    f"{_rp['Equipe']}<br>"
+                                    f"Prix : £{_rp['Prix']:.1f}m<br>"
+                                    f"xP+1 : {_s1}<br>"
+                                    f"xP+2 : {_s2}"
+                                    "<extra></extra>"
+                                ),
+                                showlegend=False
+                            ))
+                            fig_pitch.add_annotation(
+                                x=_xs[_ei], y=_yv - 8,
+                                text=_label,
+                                showarrow=False,
+                                font=dict(color='white', size=9),
+                                align='center'
+                            )
+
+                    fig_pitch.update_layout(
+                        title=dict(
+                            text=f"⚽ Formation {_formation} — GW{current_gw}",
+                            font=dict(color='white', size=15)
+                        ),
+                        xaxis=dict(range=[0, 100], showgrid=False, zeroline=False, visible=False),
+                        yaxis=dict(range=[-10, 108], showgrid=False, zeroline=False, visible=False),
+                        height=580,
+                        plot_bgcolor='#1a5c2a',
+                        paper_bgcolor='#1a5c2a',
+                        margin=dict(l=5, r=5, t=45, b=5),
+                    )
+                    st.plotly_chart(fig_pitch, use_container_width=True)
+
+                    # Remplaçants sous le terrain
+                    st.caption("🪑 Remplaçants")
+                    _bcols = st.columns(len(bench))
+                    for _bi, (_, _br) in enumerate(bench.reset_index(drop=True).iterrows()):
+                        _bxp = _br['xP+1']
+                        _bclr = "🟢" if (_bxp is not None and float(_bxp) >= 6.0) else \
+                                ("🟡" if (_bxp is not None and float(_bxp) >= 3.0) else "🔴")
+                        _bstr = f"{float(_bxp):.1f}" if _bxp is not None else "N/A"
+                        _bcols[_bi].metric(
+                            label=f"{_bclr} {_strip(_br['Joueur'])[:13]}",
+                            value=f"xP: {_bstr}",
+                            delta=f"£{_br['Prix']:.1f}m"
+                        )
+
+                except Exception as _e_pitch:
+                    st.warning(f"Pitch View indisponible : {_e_pitch}")
+
+                st.markdown("---")
+
+                # ── 5 & 6. TABLEAUX TITULAIRES + REMPLAÇANTS ──
+                st.subheader(f"⚽ Mon Équipe — GW{current_gw}")
+
+                def _color_xp_cell(val):
+                    try:
+                        v = float(str(val))
+                        if v >= 6.0:
+                            return 'background-color: #d4edda; color: #155724'
+                        if v >= 3.0:
+                            return 'background-color: #fff3cd; color: #856404'
+                        return 'background-color: #f8d7da; color: #721c24'
+                    except (TypeError, ValueError):
+                        return ''
+
+                def _squad_table(df_sub):
+                    t = df_sub[['Joueur', 'Pos', 'Equipe', 'Prix',
+                                'xP+1', 'xP+2', 'Score_Off', 'N4DS', 'État']].copy()
+                    t['xP+1'] = t['xP+1'].apply(lambda x: f"{float(x):.1f}" if x is not None else "N/A")
+                    t['xP+2'] = t['xP+2'].apply(lambda x: f"{float(x):.1f}" if x is not None else "N/A")
+                    return t
 
                 st.write("**🟢 Titulaires (XI)**")
-                st.dataframe(starters[cols_show], hide_index=True, use_container_width=True)
+                try:
+                    st.dataframe(
+                        _squad_table(starters).style.map(_color_xp_cell, subset=['xP+1']),
+                        hide_index=True, use_container_width=True
+                    )
+                except Exception:
+                    st.dataframe(_squad_table(starters), hide_index=True, use_container_width=True)
 
                 st.write("**🪑 Remplaçants**")
-                st.dataframe(bench[cols_show], hide_index=True, use_container_width=True)
+                try:
+                    st.dataframe(
+                        _squad_table(bench).style.map(_color_xp_cell, subset=['xP+1']),
+                        hide_index=True, use_container_width=True
+                    )
+                except Exception:
+                    st.dataframe(_squad_table(bench), hide_index=True, use_container_width=True)
 
-                # Radar chart de l'équipe
+                # ── 7. PROFIL ÉQUIPE ──
                 st.markdown("---")
                 st.subheader("📡 Profil de l'équipe")
-
-                pos_summary = df_my_team.groupby('Pos').agg(
+                _pos_summary = df_my_team.groupby('Pos').agg(
                     Score_Off_Moy=('Score_Off', 'mean'),
                     XGCDC_Moy=('XGCDC', 'mean'),
                     N4DS_Moy=('N4DS', 'mean'),
                     Nb=('Joueur', 'count')
                 ).reset_index()
-
                 fig_radar = px.bar(
-                    pos_summary, x='Pos', y='Score_Off_Moy',
+                    _pos_summary, x='Pos', y='Score_Off_Moy',
                     title="Score Offensif Moyen par Position",
                     color='Pos',
                     labels={'Score_Off_Moy': 'Score Off Moyen', 'Pos': 'Position'},
@@ -970,7 +1101,7 @@ elif page == "👤 Ma Team":
 
         st.markdown("---")
 
-        # ── HISTORIQUE DES TRANSFERTS ──
+        # ── 8. HISTORIQUE DES TRANSFERTS ──
         st.subheader("🔄 Historique des Transferts")
 
         if transfers:
@@ -988,19 +1119,19 @@ elif page == "👤 Ma Team":
                 columns={'event': 'GW'}
             ).sort_values('GW', ascending=False)
 
-            # Colorer le P&L
             def color_pl(val):
                 if val > 0: return 'color: green'
                 if val < 0: return 'color: red'
                 return ''
 
-            st.dataframe(
-                df_tr_display.style.applymap(color_pl, subset=['P&L (M£)']),
-                hide_index=True,
-                use_container_width=True
-            )
+            try:
+                st.dataframe(
+                    df_tr_display.style.map(color_pl, subset=['P&L (M£)']),
+                    hide_index=True, use_container_width=True
+                )
+            except Exception:
+                st.dataframe(df_tr_display, hide_index=True, use_container_width=True)
 
-            # Stats transferts
             t1, t2, t3 = st.columns(3)
             t1.metric("Total transferts", len(df_tr))
             total_cost = df_tr['element_transfers_cost'].sum() if 'element_transfers_cost' in df_tr.columns else 0
