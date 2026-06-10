@@ -875,9 +875,14 @@ elif page == "👤 Ma Team":
                     pass
 
                 if df_v6_mt is not None and not df_v6_mt.empty:
-                    _v6idx = df_v6_mt.set_index('name')[
-                        ['xP_GW1', 'xP_GW2', 'chance_of_playing', 'fdr_next', 'opp_name']
-                    ].to_dict('index')
+                    _v6idx = (
+                        df_v6_mt
+                        .drop_duplicates(subset=['name'], keep='first')
+                        .set_index('name')[
+                            ['xP_GW1', 'xP_GW2', 'chance_of_playing', 'fdr_next', 'opp_name']
+                        ]
+                        .to_dict('index')
+                    )
                     df_my_team['xP+1']   = df_my_team['Joueur'].apply(lambda n: _v6idx.get(_strip(n), {}).get('xP_GW1', None))
                     df_my_team['xP+2']   = df_my_team['Joueur'].apply(lambda n: _v6idx.get(_strip(n), {}).get('xP_GW2', None))
                     df_my_team['_chance'] = df_my_team['Joueur'].apply(lambda n: _v6idx.get(_strip(n), {}).get('chance_of_playing', 100))
