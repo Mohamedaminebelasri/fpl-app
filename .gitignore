@@ -1,0 +1,67 @@
+# ── Caches lourds (ne jamais pusher) ──────────────────────
+cache_v6_features.pkl
+cache_9seasons*.pkl
+cache_merged*.pkl
+cache_data.pkl
+
+# ── Caches disponibilité (lourd, recalculé via API) ───────
+cache_availability.pkl
+
+# ── Python ────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# ── Environnement ─────────────────────────────────────────
+.env
+.venv/
+venv/
+env/
+
+# ── CatBoost ──────────────────────────────────────────────
+catboost_info/
+
+# ── Logs / tests ──────────────────────────────────────────
+streamlit_test.log
+*.log
+
+# ── Rapports / images d'évaluation ────────────────────────
+evaluation_report*.png
+best_model_v*_report.png
+best_model_report.png
+
+# ── Fichiers optuna ───────────────────────────────────────
+optuna_*.pkl
+
+# ── Modèles anciens (garder uniquement V6) ────────────────
+model_v5_*.pkl
+model_v3_*.pkl
+model_GK.pkl
+model_DEF.pkl
+model_MID.pkl
+model_FWD.pkl
+model_*_v3.pkl
+best_XGB_*.pkl
+best_LGB_*.pkl
+best_CAT_*.pkl
+cache_merged*.pkl
+cache_data.pkl
+
+# ── Fichiers à GARDER (ne pas ignorer) ────────────────────
+# model_v6_GK.pkl
+# model_v6_DEF.pkl
+# model_v6_MID.pkl
+# model_v6_FWD.pkl
+# shap_v6_top_features.pkl
+# requirements.txt
+# fpl_app_final33.py
+# cache_elo.pkl
+# cache_odds.pkl
+# cache_availability.pkl
+
+# ── OS ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
