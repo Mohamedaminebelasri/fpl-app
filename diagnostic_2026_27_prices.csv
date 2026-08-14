@@ -1,0 +1,582 @@
+id,name,team,position,price_m,has_history,is_promoted_team
+411,Erling Haaland,Man City,FWD,15.5,True,False
+426,Bruno Borges Fernandes,Man Utd,MID,12.0,True,False
+12,Bukayo Saka,Arsenal,MID,9.5,True,False
+154,Cole Palmer,Chelsea,MID,9.5,True,False
+379,Alexander Isak,Liverpool,FWD,9.0,True,False
+397,Antoine Semenyo,Man City,MID,8.5,True,False
+427,Bryan Mbeumo,Man Utd,MID,8.0,True,False
+4,Gabriel dos Santos Magalhães,Arsenal,DEF,8.0,True,False
+428,Matheus Santos Carneiro da Cunha,Man Utd,MID,8.0,True,False
+106,Igor Thiago Nascimento Rodrigues,Brentford,FWD,8.0,True,False
+480,Morgan Gibbs-White,Nott'm Forest,MID,8.0,True,False
+55,Ollie Watkins,Aston Villa,FWD,8.0,True,False
+400,Jérémy Doku,Man City,MID,7.5,True,False
+380,Hugo Ekitiké,Liverpool,FWD,7.5,True,False
+366,Florian Wirtz,Liverpool,MID,7.5,True,False
+78,Junior Kroupi,Bournemouth,MID,7.5,True,False
+399,Rayan Cherki,Man City,MID,7.5,True,False
+40,Morgan Rogers,Chelsea,MID,7.5,True,False
+165,João Pedro Junqueira de Jesus,Chelsea,FWD,7.5,True,False
+13,Declan Rice,Arsenal,MID,7.5,True,False
+25,Viktor Gyökeres,Arsenal,FWD,7.5,True,False
+26,Kai Havertz,Arsenal,FWD,7.5,True,False
+367,Cody Gakpo,Liverpool,MID,7.0,True,False
+401,Omar Marmoush,Man City,FWD,7.0,True,False
+439,Benjamin Sesko,Man Utd,FWD,7.0,True,False
+155,Enzo Fernández,Chelsea,MID,7.0,True,False
+452,Bruno Guimarães Rodriguez Moura,Arsenal,MID,7.0,True,False
+429,Marcus Rashford,Man Utd,MID,7.0,True,False
+368,Dominik Szoboszlai,Liverpool,MID,7.0,True,False
+398,Phil Foden,Man City,MID,7.0,True,False
+387,Nico O'Reilly,Man City,DEF,6.5,True,False
+402,Rodrigo 'Rodri' Hernandez Cascante,Man City,MID,6.5,True,False
+223,Jean-Philippe Mateta,Crystal Palace,FWD,6.5,True,False
+166,Nicolas Jackson,Chelsea,FWD,6.5,True,False
+260,Harry Wilson,Leeds,MID,6.5,True,False
+377,Victor Munoz,Liverpool,MID,6.5,False,False
+14,Eberechi Eze,Arsenal,MID,6.5,True,False
+15,Martin Ødegaard,Arsenal,MID,6.5,True,False
+208,Ismaïla Sarr,Crystal Palace,MID,6.5,True,False
+156,Pedro Lomba Neto,Chelsea,MID,6.5,True,False
+356,Virgil van Dijk,Liverpool,DEF,6.5,True,False
+157,Estêvão Almeida de Oliveira Gonçalves,Chelsea,MID,6.5,True,False
+238,Jack Grealish,Man City,MID,6.5,True,False
+236,Kiernan Dewsbury-Hall,Everton,MID,6.5,True,False
+403,Sávio Moreira de Oliveira,Man City,MID,6.5,True,False
+512,Mohammed Kudus,Spurs,MID,6.5,True,False
+515,James Maddison,Spurs,MID,6.5,True,False
+95,Dango Ouattara,Brentford,MID,6.5,True,False
+481,Elliot Anderson,Man City,MID,6.5,True,False
+67,Rayan Vitor Simplício Rocha,Bournemouth,MID,6.5,True,False
+557,Christos Tzolis,Arsenal,MID,6.5,True,False
+521,Dejan Kulusevski,Spurs,MID,6.5,True,False
+5,Jurriën Timber,Arsenal,DEF,6.5,True,False
+16,Noni Madueke,Arsenal,MID,6.5,True,False
+18,Gabriel Martinelli Silva,Arsenal,MID,6.5,True,False
+158,Jamie Bynoe-Gittens,Chelsea,MID,6.0,True,False
+371,Ryan Gravenberch,Liverpool,MID,6.0,True,False
+369,Rio Ngumoha,Liverpool,MID,6.0,True,False
+336,Noah Okafor,Leeds,MID,6.0,True,False
+346,Dominic Calvert-Lewin,Leeds,FWD,6.0,True,False
+43,Youri Tielemans,Man Utd,MID,6.0,True,False
+415,Patrick Dorgu,Man Utd,MID,6.0,True,False
+431,Amad Diallo,Man Utd,MID,6.0,True,False
+105,Jaidon Anthony,Brentford,MID,6.0,True,False
+94,Kevin Schade,Brentford,MID,6.0,True,False
+69,Alex Scott,Bournemouth,MID,6.0,True,False
+491,Igor Jesus Maciel da Cruz,Nott'm Forest,FWD,6.0,True,False
+498,Marcos Senesi Barón,Spurs,DEF,6.0,True,False
+465,William Osula,Newcastle,FWD,6.0,True,False
+464,Yoane Wissa,Newcastle,FWD,6.0,True,False
+463,Nick Woltemade,Newcastle,FWD,6.0,True,False
+461,Bazoumana Touré,Newcastle,MID,6.0,False,False
+79,Francisco Evanilson de Lima Barbosa,Bournemouth,FWD,6.0,True,False
+53,Johan Manzambi,Aston Villa,MID,6.0,False,False
+160,Alejandro Garnacho Ferreyra,Aston Villa,MID,6.0,True,False
+41,Emiliano Buendía Stati,Aston Villa,MID,6.0,True,False
+68,Marcus Tavernier,Bournemouth,MID,6.0,True,False
+453,Harvey Barnes,Newcastle,MID,6.0,True,False
+457,Jacob Murphy,Newcastle,MID,6.0,True,False
+454,Anthony Elanga,Newcastle,MID,6.0,True,False
+70,Justin Kluivert,Bournemouth,MID,6.0,True,False
+482,Callum Hudson-Odoi,Nott'm Forest,MID,6.0,True,False
+490,Chris Wood,Nott'm Forest,FWD,6.0,True,False
+81,Álvaro Rodríguez,Bournemouth,FWD,6.0,False,False
+514,Mathys Tel,Spurs,MID,6.0,True,False
+513,Xavi Simons,Spurs,MID,6.0,True,False
+27,Gabriel Fernando de Jesus,Arsenal,FWD,6.0,True,False
+527,Richarlison de Andrade,Spurs,FWD,6.0,True,False
+525,Mateus Fernandes,Spurs,MID,6.0,False,False
+526,Dominic Solanke-Mitchell,Spurs,FWD,6.0,True,False
+552,Brian Brobbey,Sunderland,FWD,6.0,True,False
+1,David Raya Martín,Arsenal,GK,6.0,True,False
+239,James Garner,Everton,MID,6.0,True,False
+569,Gonzalo García,Fulham,FWD,6.0,False,False
+136,Danny Welbeck,Chelsea,FWD,6.0,True,False
+389,Matheus Nunes,Man City,DEF,6.0,True,False
+122,Yankuba Minteh,Brighton,MID,6.0,True,False
+123,Jack Hinshelwood,Brighton,MID,6.0,True,False
+121,Mitoma Kaoru,Brighton,MID,6.0,True,False
+404,Tijjani Reijnders,Man City,MID,6.0,True,False
+335,Anton Stach,Leeds,MID,6.0,True,False
+237,Iliman Ndiaye,Everton,MID,6.0,True,False
+209,Brennan Johnson,Everton,MID,6.0,True,False
+229,James Tarkowski,Everton,DEF,6.0,True,False
+222,Jørgen Strand Larsen,Crystal Palace,FWD,6.0,True,False
+542,Enzo Le Fée,Sunderland,MID,6.0,True,False
+17,Mikel Merino Zazón,Arsenal,MID,6.0,True,False
+6,William Saliba,Arsenal,DEF,6.0,True,False
+388,Marc Guéhi,Man City,DEF,6.0,True,False
+200,Maxence Lacroix,Chelsea,DEF,6.0,True,False
+430,Mason Mount,Man Utd,MID,5.5,True,False
+432,Kobbie Mainoo,Man Utd,MID,5.5,True,False
+96,Mikkel Damsgaard,Brentford,MID,5.5,True,False
+86,Keane Lewis-Potter,Brentford,MID,5.5,True,False
+84,Nathan Collins,Brentford,DEF,5.5,True,False
+440,Joshua Zirkzee,Man Utd,FWD,5.5,True,False
+108,Callum Wilson,Brentford,FWD,5.5,True,False
+565,Mamadou Sangaré,Brentford,MID,5.5,False,False
+485,Dilane Bakwa,Nott'm Forest,MID,5.5,True,False
+22,Ethan Nwaneri,Arsenal,MID,5.5,True,False
+516,Rodrigo Bentancur,Spurs,MID,5.5,True,False
+45,John McGinn,Aston Villa,MID,5.5,True,False
+44,Leon Bailey,Aston Villa,MID,5.5,True,False
+42,Evann Guessand,Aston Villa,MID,5.5,True,False
+517,Wilson Odobert,Spurs,MID,5.5,True,False
+519,Conor Gallagher,Spurs,MID,5.5,True,False
+20,Max Dowman,Arsenal,MID,5.5,True,False
+553,Wilson Isidor,Sunderland,FWD,5.5,True,False
+520,Lucas Bergvall,Spurs,MID,5.5,True,False
+533,Nordi Mukiele,Sunderland,DEF,5.5,True,False
+24,Reiss Nelson,Arsenal,MID,5.5,True,False
+23,Fábio Ferreira Vieira,Arsenal,MID,5.5,True,False
+459,Lewis Miley,Newcastle,MID,5.5,True,False
+458,Joelinton Cássio Apolinário de Lira,Newcastle,MID,5.5,True,False
+97,Mathias Jensen,Brentford,MID,5.5,True,False
+484,Omari Hutchinson,Nott'm Forest,MID,5.5,True,False
+486,James McAtee,Nott'm Forest,MID,5.5,True,False
+483,Dan Ndoye,Nott'm Forest,MID,5.5,True,False
+471,Nikola Milenković,Nott'm Forest,DEF,5.5,True,False
+80,Enes Ünal,Bournemouth,FWD,5.5,True,False
+54,Joao Gomes,Aston Villa,MID,5.5,False,False
+56,Tammy Abraham,Aston Villa,FWD,5.5,True,False
+61,Adrien Truffert,Bournemouth,DEF,5.5,True,False
+60,James Hill,Bournemouth,DEF,5.5,True,False
+455,Sandro Tonali,Spurs,MID,5.5,True,False
+581,Ousmane Diomande,Nott'm Forest,DEF,5.5,False,False
+493,Arnaud Kalimuendo,Nott'm Forest,FWD,5.5,True,False
+492,Taiwo Awoniyi,Nott'm Forest,FWD,5.5,True,False
+499,Pedro Porro Sauceda,Spurs,DEF,5.5,True,False
+472,Murillo Costa dos Santos,Nott'm Forest,DEF,5.5,True,False
+579,Ronald Araujo,Liverpool,DEF,5.5,False,False
+142,Reece James,Chelsea,DEF,5.5,True,False
+384,Gianluigi Donnarumma,Man City,GK,5.5,True,False
+392,Rayan Aït-Nouri,Man City,DEF,5.5,True,False
+393,Abdukodir Khusanov,Man City,DEF,5.5,True,False
+383,Harvey Elliott,Liverpool,MID,5.5,True,False
+568,Valentín Barco,Chelsea,MID,5.5,True,False
+578,Mykhailo Mudryk,Chelsea,MID,5.5,True,False
+338,Ethan Ampadu,Leeds,MID,5.5,True,False
+337,Brenden Aaronson,Leeds,MID,5.5,True,False
+347,Lukas Nmecha,Leeds,FWD,5.5,True,False
+358,Milos Kerkez,Liverpool,DEF,5.5,True,False
+357,Jeremie Frimpong,Liverpool,DEF,5.5,True,False
+350,Alisson Becker,Liverpool,GK,5.5,True,False
+152,Marco Palestra,Chelsea,DEF,5.5,False,False
+373,Curtis Jones,Liverpool,MID,5.5,True,False
+137,Stefanos Tzimas,Brighton,FWD,5.5,True,False
+138,Charalampos Kostoulas,Brighton,FWD,5.5,True,False
+372,Alexis Mac Allister,Liverpool,MID,5.5,True,False
+159,Moisés Caicedo Corozo,Chelsea,MID,5.5,True,False
+370,Federico Chiesa,Liverpool,MID,5.5,True,False
+143,Trevoh Chalobah,Chelsea,DEF,5.5,True,False
+390,Rúben dos Santos Gato Alves Dias,Man City,DEF,5.5,True,False
+129,Yasin Ayari,Brighton,MID,5.5,True,False
+124,Pascal Groß,Brighton,MID,5.5,True,False
+125,Georginio Rutter,Brighton,FWD,5.5,True,False
+406,Mateo Kovačić,Man City,MID,5.5,True,False
+405,Nico González Iglesias,Man City,MID,5.5,True,False
+126,Matt O'Riley,Brighton,MID,5.5,True,False
+391,Joško Gvardiol,Man City,DEF,5.5,True,False
+318,Jaden Philogene,Ipswich Town,MID,5.5,True,True
+316,Emersonn Correia da Silva,Ipswich Town,FWD,5.5,False,True
+313,Jack Clarke,Ipswich Town,MID,5.5,True,True
+315,Abdul Fatawu,Ipswich Town,MID,5.5,True,True
+186,Ephron Mason-Clark,Coventry City,MID,5.5,False,True
+164,Geovany Quenda,Chelsea,MID,5.5,False,False
+562,Daizen Maeda,Ipswich Town,MID,5.5,False,True
+167,Liam Delap,Chelsea,FWD,5.5,True,False
+190,Loum Tchaouna,Coventry City,MID,5.5,True,True
+193,Haji Wright,Coventry City,FWD,5.5,False,True
+201,Daniel Muñoz Mejía,Crystal Palace,DEF,5.5,True,False
+245,Tyler Dibling,Everton,MID,5.5,True,False
+242,Tyrique George,Everton,MID,5.5,True,False
+249,Thierno Barry,Everton,FWD,5.5,True,False
+248,Norberto Bercique Gomes Betuncal,Everton,FWD,5.5,True,False
+247,Hayden Hackney,Everton,MID,5.5,False,False
+262,Emile Smith Rowe,Fulham,MID,5.5,True,False
+263,Kevin Santos Lopes de Macedo,Fulham,MID,5.5,True,False
+264,Oscar Bobb,Fulham,MID,5.5,True,False
+261,Alex Iwobi,Fulham,MID,5.5,True,False
+268,Josh King,Fulham,MID,5.5,True,False
+295,Oli McBurnie,Hull City,FWD,5.5,False,True
+570,César Palacios,Fulham,MID,5.5,False,False
+271,Rodrigo Muniz Carvalho,Fulham,FWD,5.5,True,False
+543,Habib Diarra,Sunderland,MID,5.5,True,False
+544,Granit Xhaka,Sunderland,MID,5.5,True,False
+549,Chemsdine Talbi,Sunderland,MID,5.5,True,False
+210,Adam Wharton,Crystal Palace,MID,5.5,True,False
+211,Yéremy Pino Santos,Crystal Palace,MID,5.5,True,False
+230,Jarrad Branthwaite,Everton,DEF,5.5,True,False
+241,Dwight McNeil,Crystal Palace,MID,5.5,True,False
+224,Eddie Nketiah,Crystal Palace,FWD,5.5,True,False
+188,Victor Torp,Coventry City,MID,5.5,False,True
+226,Jordan Pickford,Everton,GK,5.5,True,False
+19,Martín Zubimendi Ibáñez,Arsenal,MID,5.5,True,False
+11,Cristhian Mosquera,Arsenal,DEF,5.5,True,False
+8,Riccardo Calafiori,Arsenal,DEF,5.5,True,False
+9,Piero Hincapié,Arsenal,DEF,5.5,True,False
+10,Benjamin White,Arsenal,DEF,5.5,True,False
+7,Myles Lewis-Skelly,Arsenal,MID,5.5,True,False
+2,Kepa Arrizabalaga Revuelta,Arsenal,GK,5.0,True,False
+3,Illan Meslier,Arsenal,GK,5.0,True,False
+535,Omar Alderete,Sunderland,DEF,5.0,True,False
+532,Daniel Ballard,Sunderland,DEF,5.0,True,False
+503,Micky van de Ven,Spurs,DEF,5.0,True,False
+52,Alysson Edward Franco da Rocha dos Santos,Aston Villa,MID,5.0,True,False
+49,Samuel Iling-Junior,Aston Villa,MID,5.0,True,False
+48,Amadou Onana,Aston Villa,MID,5.0,True,False
+47,Boubacar Kamara,Aston Villa,MID,5.0,True,False
+46,Ross Barkley,Aston Villa,MID,5.0,True,False
+231,Michael Keane,Everton,DEF,5.0,True,False
+227,Mark Travers,Everton,GK,5.0,True,False
+21,Christian Nørgaard,Everton,MID,5.0,True,False
+225,Christantus Uche,Crystal Palace,FWD,5.0,True,False
+219,Jesurun Rak-Sakyi,Crystal Palace,MID,5.0,True,False
+218,Cheick Doucouré,Crystal Palace,MID,5.0,True,False
+217,Matheus França de Oliveira,Crystal Palace,MID,5.0,True,False
+216,Romain Esse,Crystal Palace,MID,5.0,True,False
+35,Lamare Bogarde,Aston Villa,MID,5.0,True,False
+501,Kevin Danso,Spurs,DEF,5.0,True,False
+500,Cristian Romero,Spurs,DEF,5.0,True,False
+112,Jan Paul van Hecke,Spurs,DEF,5.0,True,False
+558,Xaver Schlager,Nott'm Forest,MID,5.0,False,False
+63,Veljko Milosavljevic,Bournemouth,DEF,5.0,True,False
+244,Harrison Armstrong,Everton,MID,5.0,True,False
+243,Carlos Alcaraz Durán,Everton,MID,5.0,True,False
+240,Tim Iroegbunam,Everton,MID,5.0,True,False
+232,Jake O'Brien,Everton,DEF,5.0,True,False
+203,Jaydee Canvot,Crystal Palace,DEF,5.0,True,False
+202,Chris Richards,Crystal Palace,DEF,5.0,True,False
+198,Dean Henderson,Crystal Palace,GK,5.0,True,False
+575,Caleb Yirenkyi,Coventry City,MID,5.0,False,True
+196,Jahnoah Markelo,Coventry City,FWD,5.0,False,True
+195,Ellis Simms,Coventry City,FWD,5.0,True,True
+194,Brandon Thomas-Asante,Coventry City,FWD,5.0,False,True
+62,Bafodé Diakité,Bournemouth,DEF,5.0,True,False
+488,Ibrahim Sangaré,Nott'm Forest,MID,5.0,True,False
+487,Nicolás Domínguez,Nott'm Forest,MID,5.0,True,False
+470,Felipe Rodrigues da Silva,Nott'm Forest,DEF,5.0,True,False
+469,Neco Williams,Nott'm Forest,DEF,5.0,True,False
+580,Shea Charles,Fulham,MID,5.0,True,False
+266,Tom Cairney,Fulham,MID,5.0,True,False
+265,Sander Berge,Fulham,MID,5.0,True,False
+253,Joachim Andersen,Fulham,DEF,5.0,True,False
+246,Merlin Röhl,Everton,MID,5.0,True,False
+467,Matz Sels,Nott'm Forest,GK,5.0,True,False
+567,Lukás Hornícek,Newcastle,GK,5.0,False,False
+559,Aladji Bamba,Newcastle,MID,5.0,False,False
+462,Sean Steur,Newcastle,MID,5.0,False,False
+460,Joe Willock,Newcastle,MID,5.0,True,False
+566,António João Pereira de Albuquerque Tavares da Silva,Bournemouth,DEF,5.0,False,False
+77,Amine Adli,Bournemouth,MID,5.0,True,False
+76,Alex Tóth,Bournemouth,MID,5.0,True,False
+75,Ryan Christie,Bournemouth,MID,5.0,True,False
+74,David Brooks,Bournemouth,MID,5.0,True,False
+73,Tyler Adams,Bournemouth,MID,5.0,True,False
+72,Ben Gannon-Doak,Bournemouth,MID,5.0,True,False
+71,Lewis Cook,Bournemouth,MID,5.0,True,False
+287,Liam Millar,Hull City,MID,5.0,False,True
+286,Mohamed Belloumi,Hull City,MID,5.0,False,True
+456,Jacob Ramsey,Newcastle,MID,5.0,True,False
+450,Tino Livramento,Newcastle,DEF,5.0,True,False
+449,Lewis Hall,Newcastle,DEF,5.0,True,False
+448,Dan Burn,Newcastle,DEF,5.0,True,False
+447,Sven Botman,Newcastle,DEF,5.0,True,False
+446,Fabian Schär,Newcastle,DEF,5.0,True,False
+445,Malick Thiaw,Newcastle,DEF,5.0,True,False
+442,Nick Pope,Newcastle,GK,5.0,True,False
+85,Sepp van den Berg,Brentford,DEF,5.0,True,False
+82,Caoimhín Kelleher,Brentford,GK,5.0,True,False
+436,Toby Collyer,Man Utd,MID,5.0,True,False
+435,Shea Lacey,Man Utd,MID,5.0,True,False
+434,Jack Fletcher,Man Utd,MID,5.0,True,False
+433,Manuel Ugarte Ribeiro,Man Utd,MID,5.0,True,False
+576,Elliot Stroud,Hull City,MID,5.0,False,True
+574,Jens Hjertø-Dahl,Hull City,MID,5.0,False,True
+563,Hidemasa Morita,Hull City,MID,5.0,False,True
+296,David Akintola,Hull City,MID,5.0,False,True
+293,Abu Kamara,Hull City,MID,5.0,True,True
+292,Abdülkadir Ömür,Hull City,MID,5.0,False,True
+103,Josh Dasilva,Brentford,MID,5.0,True,False
+102,Yehor Yarmoliuk,Brentford,MID,5.0,True,False
+100,Fábio Freitas Gouveia Carvalho,Brentford,MID,5.0,True,False
+99,Antoni Milambo,Brentford,MID,5.0,True,False
+98,Vitaly Janelt,Brentford,MID,5.0,True,False
+420,Leny Yoro,Man Utd,DEF,5.0,True,False
+419,Lisandro Martínez,Man Utd,DEF,5.0,True,False
+418,Harry Maguire,Man Utd,DEF,5.0,True,False
+267,Saša Lukić,Ipswich Town,MID,5.0,True,True
+417,Diogo Dalot Teixeira,Man Utd,DEF,5.0,True,False
+416,Matthijs de Ligt,Man Utd,DEF,5.0,True,False
+412,Senne Lammens,Man Utd,GK,5.0,True,False
+162,Andrey Nascimento dos Santos,Man Utd,MID,5.0,True,False
+410,Jeremy Monga,Man City,MID,5.0,True,False
+408,Kalvin Phillips,Man City,MID,5.0,True,False
+407,Claudio Echeverri,Man City,MID,5.0,True,False
+131,Carlos Baleba,Brighton,MID,5.0,True,False
+130,Mats Wieffer,Brighton,DEF,5.0,True,False
+128,Facundo Buonanotte,Brighton,MID,5.0,True,False
+127,Diego Gómez Amarilla,Brighton,MID,5.0,True,False
+120,Michael Svoboda,Brighton,DEF,5.0,False,False
+394,Max Alleyne,Man City,DEF,5.0,True,False
+144,Malo Gusto,Chelsea,DEF,5.0,True,False
+141,Filip Jörgensen,Chelsea,GK,5.0,True,False
+140,Robert Lynch Sánchez,Chelsea,GK,5.0,True,False
+101,Jordan Henderson,Chelsea,MID,5.0,True,False
+504,Luka Vušković,Brighton,DEF,5.0,True,False
+328,Pascal Struijk,Brighton,DEF,5.0,True,False
+139,Evan Ferguson,Brighton,FWD,5.0,True,False
+135,Zadok Yohanna,Brighton,MID,5.0,False,False
+319,Sam Szmodics,Ipswich Town,MID,5.0,True,True
+317,George Hirst,Ipswich Town,FWD,5.0,True,True
+314,Chiedozie Ogbene,Ipswich Town,MID,5.0,True,True
+311,Wes Burns,Ipswich Town,MID,5.0,True,True
+310,Azor Matusiwa,Ipswich Town,MID,5.0,False,True
+309,Marcelino Núñez,Ipswich Town,MID,5.0,False,True
+187,Josh Eccles,Coventry City,MID,5.0,False,True
+185,Tatsuhiro Sakamoto,Coventry City,MID,5.0,False,True
+184,Matt Grimes,Coventry City,MID,5.0,False,True
+183,Jack Rudoni,Coventry City,MID,5.0,False,True
+334,Tarik Muharemović,Leeds,DEF,5.0,False,False
+327,Jaka Bijol,Leeds,DEF,5.0,True,False
+571,Florentino Ibrain Morris Luís,Ipswich Town,MID,5.0,True,True
+324,Anis Mehmeti,Ipswich Town,MID,5.0,False,True
+322,Ali Al-Hamadi,Ipswich Town,FWD,5.0,True,True
+320,Chuba Akpom,Ipswich Town,FWD,5.0,False,True
+133,Tom Watson,Brighton,MID,5.0,True,False
+381,Lewis Koumas,Liverpool,MID,5.0,True,False
+376,Stefan Bajčetić Maquieira,Liverpool,MID,5.0,True,False
+375,Trey Nyoni,Liverpool,MID,5.0,True,False
+374,Endo Wataru,Liverpool,MID,5.0,True,False
+161,Roméo Lavia,Chelsea,MID,5.0,True,False
+149,Levi Samuels Colwill,Chelsea,DEF,5.0,True,False
+345,Tanaka Ao,Leeds,MID,5.0,True,False
+344,Ilia Gruev,Leeds,MID,5.0,True,False
+343,Daniel James,Leeds,MID,5.0,True,False
+342,Jack Harrison,Leeds,MID,5.0,True,False
+341,Wilfried Gnonto,Leeds,MID,5.0,True,False
+340,Joe Gelhardt,Leeds,MID,5.0,True,False
+339,Sean Longstaff,Leeds,MID,5.0,True,False
+104,Frank Onyeka,Coventry City,MID,5.0,True,True
+170,Emmanuel Emegha,Chelsea,FWD,5.0,False,False
+168,Marc Guiu Paz,Chelsea,FWD,5.0,True,False
+145,Wesley Fofana,Chelsea,DEF,5.0,True,False
+364,Kostas Tsimikas,Liverpool,DEF,5.0,False,False
+362,Jeremy Jacquet,Liverpool,DEF,5.0,False,False
+360,Conor Bradley,Liverpool,DEF,5.0,True,False
+359,Joe Gomez,Liverpool,DEF,5.0,True,False
+351,Giorgi Mamardashvili,Liverpool,GK,5.0,True,False
+385,James Trafford,Leeds,GK,5.0,True,False
+348,Joël Piroe,Leeds,FWD,5.0,True,False
+529,Robin Roefs,Sunderland,GK,5.0,True,False
+523,Mikey Moore,Spurs,MID,5.0,True,False
+522,Archie Gray,Spurs,MID,5.0,True,False
+28,Emiliano Martínez Romero,Aston Villa,GK,5.0,True,False
+518,Pape Matar Sarr,Spurs,MID,5.0,True,False
+215,Justin Devenny,Crystal Palace,MID,5.0,True,False
+214,Daichi Kamada,Crystal Palace,MID,5.0,True,False
+213,Jefferson Lerma Solís,Crystal Palace,MID,5.0,True,False
+551,Nilson Angulo,Sunderland,MID,5.0,True,False
+550,Djiamgone Jocelin Ta Bi,Sunderland,MID,5.0,True,False
+548,Chris Rigg,Sunderland,MID,5.0,True,False
+547,Romaine Mundle,Sunderland,MID,5.0,True,False
+546,Simon Adingra,Sunderland,MID,5.0,True,False
+545,Noah Sadiki,Sunderland,MID,5.0,True,False
+541,Thomas Meunier,Sunderland,DEF,4.5,False,False
+204,Tyrick Mitchell,Crystal Palace,DEF,4.5,True,False
+205,Borna Sosa,Crystal Palace,DEF,4.5,True,False
+206,Chadi Riad Dnanou,Crystal Palace,DEF,4.5,True,False
+409,Divine Mukasa,Man City,MID,4.5,True,False
+207,Oscar Mingueza,Crystal Palace,DEF,4.5,False,False
+212,Will Hughes,Crystal Palace,MID,4.5,True,False
+29,Marco Bizot,Aston Villa,GK,4.5,True,False
+31,Ezri Konsa Ngoyo,Aston Villa,DEF,4.5,True,False
+30,Lucas Digne,Aston Villa,DEF,4.5,True,False
+32,Matty Cash,Aston Villa,DEF,4.5,True,False
+33,Tyrone Mings,Aston Villa,DEF,4.5,True,False
+531,Melker Ellborg,Sunderland,GK,4.5,True,False
+34,Pau Torres,Aston Villa,DEF,4.5,True,False
+524,Callum Olusesi,Spurs,MID,4.5,True,False
+528,Dane Scarlett,Spurs,FWD,4.5,True,False
+349,Mateo Joseph Fernández-Regatillo,Leeds,FWD,4.5,True,False
+147,Tosin Adarabioyo,Chelsea,DEF,4.5,True,False
+169,Shumaira Mheuka,Chelsea,FWD,4.5,True,False
+163,Dário Luís Essugo,Chelsea,MID,4.5,True,False
+150,Mamadou Sarr,Chelsea,DEF,4.5,True,False
+110,Carl Rushworth,Coventry City,GK,4.5,True,True
+561,Aaron Anselmino,Chelsea,DEF,4.5,True,False
+148,Jorrel Hato,Chelsea,DEF,4.5,True,False
+146,Benoît Badiashile Mukinayi,Chelsea,DEF,4.5,True,False
+560,Mike Penders,Chelsea,GK,4.5,True,False
+326,Lucas Estella Perri,Leeds,GK,4.5,True,False
+564,Kjell Scherpen,Ipswich Town,GK,4.5,True,True
+554,Kayne van Oevelen,Ipswich Town,GK,4.5,False,True
+323,Kasey McAteer,Ipswich Town,MID,4.5,True,True
+321,Sindre Walle Egeli,Ipswich Town,FWD,4.5,False,True
+134,Nehemiah Oriola,Brighton,MID,4.5,True,False
+382,Jayden Danns,Liverpool,FWD,4.5,True,False
+378,James McConnell,Liverpool,MID,4.5,True,False
+153,Axel Disasi,Chelsea,DEF,4.5,True,False
+151,Josh Acheampong,Chelsea,DEF,4.5,True,False
+413,Altay Bayındır,Man Utd,GK,4.5,True,False
+395,Rico Lewis,Man City,DEF,4.5,True,False
+386,Marcus Bettinelli,Man City,GK,4.5,True,False
+312,Jack Taylor,Ipswich Town,MID,4.5,True,True
+132,Harry Howell,Brighton,MID,4.5,True,False
+119,João Pedro Loureiro da Costa,Brighton,DEF,4.5,False,False
+118,Igor Julio dos Santos de Paulo,Brighton,DEF,4.5,True,False
+117,Diego Coppola,Brighton,DEF,4.5,True,False
+331,Gabriel Gudmundsson,Leeds,DEF,4.5,True,False
+325,Karl Darlow,Man Utd,GK,4.5,True,False
+329,Joe Rodon,Leeds,DEF,4.5,True,False
+330,Jayden Bogle,Leeds,DEF,4.5,True,False
+333,Sebastiaan Bornauw,Leeds,DEF,4.5,True,False
+332,James Justin,Leeds,DEF,4.5,True,False
+396,Vitor de Oliveira Nunes dos Reis,Man City,DEF,4.5,True,False
+443,Mark Gillespie,Newcastle,GK,4.5,True,False
+274,Jack Butland,Hull City,GK,4.5,True,True
+423,Luke Shaw,Man Utd,DEF,4.5,True,False
+109,Bart Verbruggen,Brighton,GK,4.5,True,False
+107,Kaye Furo,Brentford,FWD,4.5,True,False
+422,Noussair Mazraoui,Man Utd,DEF,4.5,True,False
+294,Óscar Zambrano,Hull City,MID,4.5,False,True
+291,Eliot Matazo,Hull City,MID,4.5,False,True
+290,Regan Slater,Hull City,MID,4.5,False,True
+298,Enis Destan,Hull City,FWD,4.5,False,True
+299,Mason Burstow,Hull City,FWD,4.5,True,True
+572,Konstantinos Tzolakis,Hull City,GK,4.5,False,True
+297,Darko Gyabi,Hull City,MID,4.5,True,True
+289,Matt Crooks,Hull City,MID,4.5,False,True
+421,Ayden Heaven,Man Utd,DEF,4.5,True,False
+172,Ben Wilson,Coventry City,GK,4.5,False,True
+300,Christian Walton,Ipswich Town,GK,4.5,True,True
+534,Trai Hume,Sunderland,DEF,4.5,True,False
+507,Ashley Phillips,Spurs,DEF,4.5,True,False
+536,Reinildo Mandava,Sunderland,DEF,4.5,True,False
+537,Jenson Seelt,Sunderland,DEF,4.5,True,False
+506,Destiny Udogie,Spurs,DEF,4.5,True,False
+505,Djed Spence,Spurs,DEF,4.5,True,False
+50,Bradley Burrowes,Aston Villa,MID,4.5,True,False
+192,Kaine Andrews,Coventry City,MID,4.5,False,True
+189,George Shepherd,Coventry City,MID,4.5,False,True
+228,Tom King,Everton,GK,4.5,True,False
+191,Raphael Borges Rodrigues,Coventry City,MID,4.5,False,True
+577,Takehiro Tomiyasu,Crystal Palace,DEF,4.5,True,False
+51,George Hemmings,Aston Villa,MID,4.5,True,False
+65,Julián Araujo Zúñiga,Bournemouth,DEF,4.5,True,False
+233,Vitalii Mykolenko,Everton,DEF,4.5,True,False
+64,Adam Smith,Bournemouth,DEF,4.5,True,False
+474,Jair Paula da Cunha Filho,Nott'm Forest,DEF,4.5,True,False
+93,Jannik Schuster,Brentford,DEF,4.5,False,False
+91,Ethan Pinnock,Brentford,DEF,4.5,True,False
+92,Kim Ji-soo,Brentford,DEF,4.5,True,False
+89,Rico Henry,Brentford,DEF,4.5,True,False
+88,Michael Kayode,Brentford,DEF,4.5,True,False
+87,Kristoffer Ajer,Brentford,DEF,4.5,True,False
+90,Aaron Hickey,Brentford,DEF,4.5,True,False
+83,Hákon Rafn Valdimarsson,Brentford,GK,4.5,True,False
+441,Chido Obi,Man Utd,FWD,4.5,True,False
+437,Bendito Mantato,Man Utd,MID,4.5,True,False
+438,Tyler Fletcher,Man Utd,MID,4.5,True,False
+116,Lewis Dunk,Brighton,DEF,4.5,True,False
+115,Maxim De Cuyper,Brighton,DEF,4.5,True,False
+114,Olivier Boscagli,Brighton,DEF,4.5,True,False
+113,Ferdi Kadıoğlu,Brighton,DEF,4.5,True,False
+444,Ewen Jaouen,Newcastle,GK,4.5,False,False
+494,Guglielmo Vicario,Spurs,GK,4.5,True,False
+502,Andrew Robertson,Spurs,DEF,4.5,True,False
+496,Antonín Kinský,Spurs,GK,4.5,True,False
+36,Ian Maatsen,Aston Villa,DEF,4.5,True,False
+221,Joél Drakes-Thomas,Crystal Palace,MID,4.5,True,False
+220,Rio Cardines,Crystal Palace,DEF,4.5,True,False
+37,Victor Lindelöf,Aston Villa,DEF,4.5,True,False
+199,Walter Benítez,Crystal Palace,GK,4.5,True,False
+197,Norman Bassette,Coventry City,FWD,4.5,False,True
+234,Nathan Patterson,Everton,DEF,4.5,True,False
+57,Đorđe Petrović,Bournemouth,GK,4.5,True,False
+478,Luca Netz,Nott'm Forest,DEF,4.5,True,False
+489,Ryan Yates,Nott'm Forest,MID,4.5,True,False
+573,Juanlu Sánchez,Bournemouth,DEF,4.5,False,False
+288,Kieran Dowell,Hull City,MID,4.5,True,True
+255,Jorge Cuenca Barreno,Fulham,DEF,4.5,True,False
+475,Nicolò Savona,Nott'm Forest,DEF,4.5,True,False
+473,Ola Aina,Nott'm Forest,DEF,4.5,True,False
+272,Jonah Kusi-Asare,Fulham,FWD,4.5,True,False
+258,Timothy Castagne,Fulham,DEF,4.5,True,False
+257,Calvin Bassey,Fulham,DEF,4.5,True,False
+270,Harrison Reed,Fulham,MID,4.5,True,False
+269,Ryan Sessegnon,Fulham,DEF,4.5,True,False
+468,John Victor Maciel Furtado,Nott'm Forest,GK,4.5,True,False
+256,Kenny Tete,Fulham,DEF,4.5,True,False
+254,Antonee Robinson,Fulham,DEF,4.5,True,False
+250,Bernd Leno,Fulham,GK,4.5,True,False
+466,Sean Neave,Newcastle,FWD,4.5,True,False
+540,Arthur Masuaku,Sunderland,DEF,4.0,True,False
+355,Harvey Davies,Liverpool,GK,4.0,True,False
+171,Oliver Dovin,Coventry City,GK,4.0,False,True
+414,Tom Heaton,Man Utd,GK,4.0,True,False
+307,Ben Johnson,Ipswich Town,DEF,4.0,True,True
+182,Aurèle Amenda,Coventry City,DEF,4.0,False,True
+181,Miguel Brau,Coventry City,DEF,4.0,False,True
+308,Darnell Furlong,Ipswich Town,DEF,4.0,True,True
+180,Luke Woolfenden,Coventry City,DEF,4.0,True,True
+511,João Victor de Souza Menezes,Spurs,DEF,4.0,True,False
+530,Anthony Patterson,Sunderland,GK,4.0,True,False
+352,Freddie Woodman,Liverpool,GK,4.0,True,False
+365,Calvin Ramsay,Liverpool,DEF,4.0,True,False
+363,Giovanni Leoni,Liverpool,DEF,4.0,True,False
+361,Wellity Lucky,Liverpool,DEF,4.0,True,False
+354,Vitezslav Jaros,Liverpool,GK,4.0,False,False
+353,Armin Pecsi,Liverpool,GK,4.0,False,False
+424,Harry Amass,Man Utd,DEF,4.0,True,False
+259,Issa Diop,Ipswich Town,DEF,4.0,True,True
+179,Joel Latibeaudiere,Coventry City,DEF,4.0,False,True
+178,Jake Bidwell,Coventry City,DEF,4.0,False,True
+177,Kaine Kesler-Hayden,Coventry City,DEF,4.0,True,True
+176,Jay Dasilva,Coventry City,DEF,4.0,False,True
+174,Liam Kitching,Coventry City,DEF,4.0,False,True
+175,Milan van Ewijk,Coventry City,DEF,4.0,False,True
+173,Bobby Thomas,Coventry City,DEF,4.0,True,True
+306,Jacob Greaves,Ipswich Town,DEF,4.0,True,True
+301,Alex Palmer,Ipswich Town,GK,4.0,True,True
+305,Leif Davis,Ipswich Town,DEF,4.0,True,True
+304,Dara O'Shea,Ipswich Town,DEF,4.0,True,True
+303,Cédric Kipré,Ipswich Town,DEF,4.0,False,True
+111,Jason Steele,Brighton,GK,4.0,True,False
+425,Tyler Fredricson,Man Utd,DEF,4.0,True,False
+556,Matt Targett,Hull City,DEF,4.0,True,True
+302,David Button,Ipswich Town,GK,4.0,True,True
+285,Paddy McNair,Hull City,DEF,4.0,False,True
+284,Cathal McCarthy,Hull City,DEF,4.0,False,True
+283,Matty Jacob,Hull City,DEF,4.0,False,True
+282,Ryan Giles,Hull City,DEF,4.0,True,True
+281,Cody Drameh,Hull City,DEF,4.0,True,True
+280,Lewie Coyle,Hull City,DEF,4.0,False,True
+279,Semi Ajayi,Hull City,DEF,4.0,False,True
+278,Charlie Hughes,Hull City,DEF,4.0,False,True
+277,John Egan,Hull City,DEF,4.0,True,True
+276,Thimothée Lo-Tutala,Hull City,GK,4.0,False,True
+275,Harvey Cartwright,Hull City,GK,4.0,False,True
+273,Dillon Phillips,Hull City,GK,4.0,False,True
+451,Alex Murphy,Newcastle,DEF,4.0,True,False
+476,Omar Richards,Nott'm Forest,DEF,4.0,True,False
+252,Alfie McNally,Fulham,GK,4.0,True,False
+251,Benjamin Lecomte,Fulham,GK,4.0,True,False
+235,Adam Aznou,Everton,DEF,4.0,True,False
+58,Fraser Forster,Bournemouth,GK,4.0,True,False
+59,Will Dennis,Bournemouth,GK,4.0,True,False
+479,Tyler Bindon,Nott'm Forest,DEF,4.0,False,False
+477,Zach Abbott,Nott'm Forest,DEF,4.0,True,False
+66,Julio Soler Barreto,Bournemouth,DEF,4.0,True,False
+495,Brandon Austin,Spurs,GK,4.0,True,False
+497,Martin Dubravka,Spurs,GK,4.0,True,False
+555,Remi Matthews,Crystal Palace,GK,4.0,True,False
+39,Kosta Nedeljkovic,Aston Villa,DEF,4.0,False,False
+38,Andrés García,Aston Villa,DEF,4.0,True,False
+508,Ben Davies,Spurs,DEF,4.0,True,False
+539,Luke O'Nien,Sunderland,DEF,4.0,True,False
+510,James Rowswell,Spurs,DEF,4.0,True,False
+509,Jun'ai Byfield,Spurs,DEF,4.0,True,False
+538,Leo Fuhr Hjelde,Sunderland,DEF,4.0,True,False

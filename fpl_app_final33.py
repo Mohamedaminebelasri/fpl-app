@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
+import fpl_feature_lib as flib
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import plotly.express as px
@@ -367,8 +368,74 @@ def load_predictions():
 
 
 # ============================================================
+# --- NEW : CONFIANCE MODÈLE SELON LA PHASE DE SAISON ---
+# ============================================================
+
+@st.cache_data(ttl=3600)
+def get_current_gw():
+    """GW actuelle (courante, sinon la prochaine) -- reutilise la meme
+    logique que get_xp_predictions()."""
+    try:
+        base_data = http.get("https://fantasy.premierleague.com/api/bootstrap-static/", timeout=10).json()
+        return next(
+            (e['id'] for e in base_data['events'] if e['is_current']),
+            next((e['id'] for e in base_data['events'] if e['is_next']), 1)
+        )
+    except Exception:
+        return 1
+
+
+def show_confidence_banner(gw: int):
+    """Bandeau de confiance modele selon la phase de saison (purement
+    informatif, n'affecte pas les predictions -- cf. flib.model_confidence)."""
+    conf = flib.model_confidence(gw)
+    if conf <= 30:
+        st.warning(
+            f"🟡 GW{gw} — Confiance modèle FAIBLE ({conf}%). "
+            f"Données historiques insuffisantes cette saison. "
+            f"Privilégie les fixtures et le bon sens pour cette GW."
+        )
+    elif conf <= 55:
+        st.warning(
+            f"🟠 GW{gw} — Confiance modèle MODÉRÉE ({conf}%). "
+            f"Le modèle apprend encore les tendances de cette saison. "
+            f"Utilise les prédictions avec prudence."
+        )
+    elif conf <= 80:
+        st.info(
+            f"🔵 GW{gw} — Confiance modèle CORRECTE ({conf}%). "
+            f"Les données récentes commencent à être fiables."
+        )
+    else:
+        st.success(
+            f"✅ GW{gw} — Confiance modèle ÉLEVÉE ({conf}%). "
+            f"Prédictions basées sur des données complètes."
+        )
+    return conf
+
+
+# ============================================================
 # --- NEW : PRÉDICTIONS V6 (modèles pkl pré-entraînés) ---
 # ============================================================
+
+@st.cache_data(ttl=3600)
+def _load_feature_caches():
+    """Charge le cache d'entrainement (pour le fallback nouveaux joueurs /
+    equipes promues) + le dernier etat connu de chaque joueur (pour les
+    rolling features en inference) + la forme la plus recente de chaque
+    equipe (pour corriger le contexte d'un joueur transfere)."""
+    df_train = pd.DataFrame()
+    df_latest = pd.DataFrame()
+    if os.path.exists('cache_9seasons_features.pkl'):
+        with open('cache_9seasons_features.pkl', 'rb') as _f:
+            df_train = pickle.load(_f)
+    if os.path.exists('cache_player_latest_state.pkl'):
+        with open('cache_player_latest_state.pkl', 'rb') as _f:
+            df_latest = pickle.load(_f)
+    team_snapshot = (flib.latest_team_snapshot(df_train) if len(df_train)
+                      else pd.DataFrame(columns=['team'] + flib.TEAM_CONTEXT_COLS))
+    return df_train, df_latest, team_snapshot
+
 
 @st.cache_data(ttl=3600)
 def get_xp_predictions():
@@ -386,7 +453,7 @@ def get_xp_predictions():
     if not models:
         return None, "Aucun modèle V6 trouvé. Placez les fichiers model_v6_*.pkl dans le dossier de l'app."
 
-    # 2. Charge les features SHAP
+    # 2. Charge les features SHAP (ordre exact attendu par les modèles)
     top_features = {}
     if os.path.exists('shap_v6_top_features.pkl'):
         try:
@@ -394,6 +461,15 @@ def get_xp_predictions():
                 top_features = pickle.load(_f)
         except Exception:
             pass
+    if isinstance(top_features, list) and top_features:
+        feat_names_default = list(top_features)
+    else:
+        feat_names_default = list(flib.MODEL_FEATURES_FALLBACK)
+
+    # 2bis. Charge l'historique (rolling features réelles + fallback nouveaux joueurs)
+    df_train, df_latest, team_snapshot = _load_feature_caches()
+    if len(df_train) == 0:
+        return None, "cache_9seasons_features.pkl introuvable — lancez backfill_2025_26.py d'abord."
 
     # 3. Charge les caches optionnels
     cache_elo = {}
@@ -453,12 +529,19 @@ def get_xp_predictions():
             return 0.0
 
     pos_map = {1: 'GK', 2: 'DEF', 3: 'MID', 4: 'FWD'}
+    teams_current = set(teams_dict.values())
+    promoted_teams = flib.detect_promoted_teams(df_train, teams_current)
 
     records = []
+    n_no_history = 0
     for p in base_data['elements']:
         tid = p['team']
         pos_id = p['element_type']
         pos = pos_map.get(pos_id, 'MID')
+        team_name = teams_dict.get(tid, '')
+        price_m = p.get('now_cost', 0) / 10.0
+        player_key = f"{p.get('first_name', '')} {p.get('second_name', '')}".strip()
+        is_promoted = team_name in promoted_teams
 
         fixes = team_next_fixes.get(tid, [])
         nf = fixes[0] if fixes else None
@@ -482,56 +565,34 @@ def get_xp_predictions():
         chance_pct = float(chance_raw) if chance_raw is not None else 100.0
         chance_norm = chance_pct / 100.0
 
-        mins = int(p.get('minutes', 0))
-        exp_mins = (mins / max(current_gw, 1)) * chance_norm * games_next_gw
+        # Vecteur de features : dernier etat reel connu du joueur (rolling
+        # features calculees sur son historique) si disponible, sinon
+        # fallback predict_new_player() (nouveau transfert / equipe promue).
+        feat, has_history = flib.build_live_feature_vector(
+            player_key=player_key, position=pos, price_m=price_m,
+            team_name=team_name, was_home=was_home,
+            chance_of_playing_next=chance_norm, games_next_gw=games_next_gw,
+            gw_number=next_event_id, feature_cols=feat_names_default,
+            df_latest=df_latest, df_train=df_train,
+            team_snapshot=team_snapshot, is_promoted_team=is_promoted,
+        )
+        if not has_history:
+            n_no_history += 1
 
-        # ELO
-        elo_win_prob = 0.5
-        if isinstance(cache_elo, dict):
-            elo_v = cache_elo.get(tid, cache_elo.get(str(tid)))
-            if isinstance(elo_v, dict):
-                elo_win_prob = float(elo_v.get('win_prob', elo_v.get('prob', 0.5)))
-            elif isinstance(elo_v, (int, float)):
-                elo_win_prob = float(elo_v) if 0.0 <= float(elo_v) <= 1.0 else 0.5
-
-        feat = {
-            'minutes': float(mins),
-            'value': float(p.get('now_cost', 0)),
-            'now_cost': p.get('now_cost', 0) / 10,
-            'ict_index': _sf(p.get('ict_index')),
-            'influence': _sf(p.get('influence')),
-            'selected_by_percent': _sf(p.get('selected_by_percent')),
-            'transfers_in': float(p.get('transfers_in_event', 0)),
-            'transfers_out': float(p.get('transfers_out_event', 0)),
-            'transfers_in_event': float(p.get('transfers_in_event', 0)),
-            'transfers_out_event': float(p.get('transfers_out_event', 0)),
-            'creativity': _sf(p.get('creativity')),
-            'threat': _sf(p.get('threat')),
-            'bps': float(p.get('bps', 0)),
-            'form': _sf(p.get('form')),
-            'was_home': float(was_home),
-            'chance_of_playing_next_round': chance_pct,
-            'chance_of_playing': chance_norm,
-            'games_next_gw': float(games_next_gw),
-            'expected_minutes': exp_mins,
-            'fdr': float(fdr_gw1),
-            'fdr_gw1': float(fdr_gw1),
-            'total_points': float(p.get('total_points', 0)),
-            'ep_next': _sf(p.get('ep_next')),
-            'ep_this': _sf(p.get('ep_this')),
-            'pos_id': float(pos_id),
-            'element_type': float(pos_id),
-            'elo_win_prob': elo_win_prob,
-        }
+        # ELO (derniere cote connue par equipe, cle normalisee)
+        elo_team = flib.latest_elo(team_name, cache_elo)
+        opp_team_name = opp_name.rsplit(' (', 1)[0] if nf else ''
+        elo_opp = flib.latest_elo(opp_team_name, cache_elo) if opp_team_name else 1500.0
+        elo_win_prob = 1 / (1 + 10 ** (-(elo_team - elo_opp) / 400))
 
         records.append({
             '_feat': feat,
             'id': p['id'],
             'name': p['web_name'],
-            'team': teams_dict.get(tid, ''),
+            'team': team_name,
             'team_id': tid,
             'position': pos,
-            'price': p.get('now_cost', 0) / 10,
+            'price': price_m,
             'chance_of_playing': int(chance_pct),
             'is_double_gw': is_dgw,
             'form': _sf(p.get('form')),
@@ -539,6 +600,8 @@ def get_xp_predictions():
             'opp_name': opp_name,
             'was_home': was_home,
             'elo_win_prob': elo_win_prob,
+            'is_promoted_team': int(is_promoted),
+            'has_history': has_history,
         })
 
     # 6. Prédictions
@@ -551,14 +614,8 @@ def get_xp_predictions():
         if mdl is not None:
             if isinstance(top_features, dict) and pos in top_features:
                 feat_names = list(top_features[pos])
-            elif isinstance(top_features, list) and top_features:
-                feat_names = list(top_features)
-            elif hasattr(mdl, 'feature_names_in_'):
-                feat_names = list(mdl.feature_names_in_)
-            elif hasattr(mdl, 'feature_names'):
-                feat_names = list(mdl.feature_names)
             else:
-                feat_names = list(rec['_feat'].keys())
+                feat_names = feat_names_default
 
             fvec = np.array([[float(rec['_feat'].get(fn, 0)) for fn in feat_names]])
             try:
@@ -585,6 +642,8 @@ def get_xp_predictions():
             'opp_name': rec['opp_name'],
             'was_home': rec['was_home'],
             'elo_win_prob': rec['elo_win_prob'],
+            'is_promoted_team': rec['is_promoted_team'],
+            'has_history': rec['has_history'],
         })
 
     return pd.DataFrame(df_rows), None
@@ -828,13 +887,15 @@ elif page == "👤 Ma Team":
             st.error("❌ Team ID introuvable. Vérifie le numéro et réessaie.")
             st.stop()
 
+        show_confidence_banner(current_gw)
+
         # ── 1. HEADER + KPIs ──
         st.header(f"🏟️ {info.get('name', 'Mon Équipe')}  —  {info.get('player_first_name', '')} {info.get('player_last_name', '')}")
         k1, k2, k3, k4 = st.columns(4)
-        k1.metric("🏆 Points Total", f"{info.get('summary_overall_points', 0):,}")
-        k2.metric("🌍 Rank Global", f"#{info.get('summary_overall_rank', 0):,}")
-        k3.metric(f"⚡ Points GW{current_gw}", info.get('summary_event_points', 0))
-        k4.metric("💰 Valeur Équipe", f"{info.get('last_deadline_value', 0) / 10:.1f} M£")
+        k1.metric("🏆 Points Total", f"{info.get('summary_overall_points') or 0:,}")
+        k2.metric("🌍 Rank Global", f"#{info.get('summary_overall_rank') or 0:,}")
+        k3.metric(f"⚡ Points GW{current_gw}", info.get('summary_event_points') or 0)
+        k4.metric("💰 Valeur Équipe", f"{(info.get('last_deadline_value') or 0) / 10:.1f} M£")
 
         st.markdown("---")
 
@@ -858,9 +919,9 @@ elif page == "👤 Ma Team":
             df_my_team, entry_hist = enrich_picks_with_scores(picks_data, df_players)
 
             b1, b2, b3 = st.columns(3)
-            b1.info(f"💰 Valeur équipe : **{entry_hist.get('value', 0) / 10:.1f} M£**")
-            b2.info(f"🏦 En banque : **{entry_hist.get('bank', 0) / 10:.1f} M£**")
-            b3.info(f"⚡ Points cette GW : **{entry_hist.get('points', 0)} pts**")
+            b1.info(f"💰 Valeur équipe : **{(entry_hist.get('value') or 0) / 10:.1f} M£**")
+            b2.info(f"🏦 En banque : **{(entry_hist.get('bank') or 0) / 10:.1f} M£**")
+            b3.info(f"⚡ Points cette GW : **{entry_hist.get('points') or 0} pts**")
 
             if not df_my_team.empty:
 
@@ -1162,6 +1223,8 @@ elif page == "🔮 Prédictions xP":
         "Target : ep_next (expected points FPL)"
     )
 
+    show_confidence_banner(get_current_gw())
+
     with st.spinner("Entraînement du modèle RandomForest en cours..."):
         df_pred, pred_error = load_predictions()
 
@@ -1252,6 +1315,9 @@ elif page == "🧪 Prédictions V6":
         "Modèles pkl V6 par position (GK/DEF/MID/FWD) · "
         "Features SHAP · xP_GW2 = xP_GW1 × 0.95"
     )
+
+    v6_current_gw = get_current_gw()
+    show_confidence_banner(v6_current_gw)
 
     with st.spinner("🔄 Chargement des prédictions V6..."):
         df_v6, v6_err = get_xp_predictions()
@@ -1364,10 +1430,23 @@ elif page == "🧪 Prédictions V6":
             else:
                 return "❌ 0%"
 
-        df_show_v6 = df_v6_filt[
-            ['name', 'team', 'position', 'price', 'xP_GW1', 'xP_GW2', 'xP_Total',
-             'chance_of_playing', 'is_double_gw']
-        ].copy()
+        def _fmt_fiabilite(row):
+            is_new_or_promoted = bool(row.get('is_promoted_team')) or not bool(row.get('has_history', True))
+            if is_new_or_promoted and v6_current_gw <= 6:
+                return "⚠️ Faible (nouveau + début saison)"
+            elif is_new_or_promoted:
+                return "🟡 Moyenne (nouveau joueur)"
+            elif v6_current_gw <= 6:
+                return "🟠 Modérée (début saison)"
+            else:
+                return "✅ Élevée"
+
+        show_cols = ['name', 'team', 'position', 'price', 'xP_GW1', 'xP_GW2', 'xP_Total',
+                     'chance_of_playing', 'is_double_gw']
+        for optional_col in ['is_promoted_team', 'has_history']:
+            if optional_col in df_v6_filt.columns:
+                show_cols.append(optional_col)
+        df_show_v6 = df_v6_filt[show_cols].copy()
         df_show_v6['Joueur'] = df_show_v6.apply(
             lambda r: f"{r['name']} 🔥" if r['is_double_gw'] else r['name'], axis=1
         )
@@ -1376,9 +1455,11 @@ elif page == "🧪 Prédictions V6":
         df_show_v6['xP GW+1'] = df_show_v6['xP_GW1'].round(1)
         df_show_v6['xP GW+2'] = df_show_v6['xP_GW2'].round(1)
         df_show_v6['Total'] = df_show_v6['xP_Total'].round(1)
+        df_show_v6['Fiabilité'] = df_show_v6.apply(_fmt_fiabilite, axis=1)
 
         df_table_v6 = (
-            df_show_v6[['Joueur', 'team', 'position', 'Prix', 'xP GW+1', 'xP GW+2', 'Total', 'Dispo']]
+            df_show_v6[['Joueur', 'team', 'position', 'Prix', 'xP GW+1', 'xP GW+2', 'Total',
+                        'Dispo', 'Fiabilité']]
             .rename(columns={'team': 'Équipe', 'position': 'Pos'})
             .sort_values('Total', ascending=False)
             .reset_index(drop=True)
@@ -1395,6 +1476,8 @@ elif page == "🔄 Transferts":
 
     st.title("🔄 Transferts Suggérés")
     st.caption("Basé sur les prédictions V6 · Identifie les 3 joueurs les moins performants et suggère des remplaçants.")
+
+    show_confidence_banner(get_current_gw())
 
     # ── BLOC A : Team ID ──
     team_id_tr_raw = st.number_input(
@@ -1434,7 +1517,12 @@ elif page == "🔄 Transferts":
 
     picks = picks_tr.get('picks', [])
     entry_hist_tr = picks_tr.get('entry_history', {})
-    bank_tr = entry_hist_tr.get('bank', 0) / 10
+    bank_tr = (entry_hist_tr.get('bank') or 0) / 10
+
+    if not picks:
+        st.info("Aucune équipe enregistrée pour la GW actuelle (saison pas encore commencée "
+                "ou picks pas encore soumis). Reviens après le début de la GW1.")
+        st.stop()
 
     # Enrichissement du squad avec xP V6
     v6_by_id = (
@@ -1564,6 +1652,8 @@ elif page == "⚽ Capitaine":
     st.caption(
         "Score = xP_GW1 × 2 × elo_win_prob × chance_of_playing × (1 / FDR_next)"
     )
+
+    show_confidence_banner(get_current_gw())
 
     with st.spinner("🔄 Chargement des prédictions V6..."):
         df_v6_cap, v6_err_cap = get_xp_predictions()

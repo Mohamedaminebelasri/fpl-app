@@ -1,0 +1,15 @@
+[2026-08-13 02:27:52] ============================================================
+[2026-08-13 02:27:52] retrain_weekly.py -- debut
+[2026-08-13 02:27:54] Aucune GW terminee pour l'instant (pre-saison) -- rien a faire.
+[2026-08-13 02:29:11]    Predictions GW1 generees pour 581 joueurs -> predictions_log.csv
+[2026-08-13 02:29:31]    Precision GW1: MAE=1.27  RMSE=1.67  (n=581 joueurs) -> C:/Users/PC/AppData/Local/Temp/claude/C--Users-PC-Desktop-FPL-APP/e2f20279-6a1f-4f90-8d15-80a3eb18b8e4/scratchpad/accuracy_log_test.csv
+[2026-08-13 02:32:44]    GK: 30,931 lignes, fit en 2.8s -> model_v6_GK_gw0.pkl + model_v6_GK.pkl
+[2026-08-13 02:32:46]    DEF: 94,486 lignes, fit en 1.6s -> model_v6_DEF_gw0.pkl + model_v6_DEF.pkl
+[2026-08-13 02:32:49]    MID: 119,870 lignes, fit en 3.2s -> model_v6_MID_gw0.pkl + model_v6_MID.pkl
+[2026-08-13 02:32:50]    FWD: 36,145 lignes, fit en 1.4s -> model_v6_FWD_gw0.pkl + model_v6_FWD.pkl
+[2026-08-13 02:34:35]    Predictions GW1 generees pour 581 joueurs -> predictions_log.csv
+[2026-08-13 03:07:14]    GK: 29,047 lignes, fit en 2.3s -> model_v6_GK_gw0.pkl + model_v6_GK.pkl
+[2026-08-13 03:07:16]    DEF: 89,254 lignes, fit en 1.6s -> model_v6_DEF_gw0.pkl + model_v6_DEF.pkl
+[2026-08-13 03:07:19]    MID: 112,646 lignes, fit en 2.8s -> model_v6_MID_gw0.pkl + model_v6_MID.pkl
+[2026-08-13 03:07:20]    FWD: 34,201 lignes, fit en 1.2s -> model_v6_FWD_gw0.pkl + model_v6_FWD.pkl
+[2026-08-13 03:08:10]    Predictions GW1 generees pour 581 joueurs -> predictions_log.csv

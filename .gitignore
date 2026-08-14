@@ -7,6 +7,10 @@ cache_data.pkl
 # ── Caches disponibilité (lourd, recalculé via API) ───────
 cache_availability.pkl
 
+# ── Backups locaux (lourds, jamais pusher) ────────────────
+*.bak_pre_2025_26*
+*.bak_pre_dedupe_fix
+
 # ── Python ────────────────────────────────────────────────
 __pycache__/
 *.pyc
