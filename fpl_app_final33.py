@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import requests
 import fpl_feature_lib as flib
-import elite_consensus
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import plotly.express as px
@@ -667,7 +666,6 @@ page = st.sidebar.radio(
         "🧪 Prédictions V6",
         "🔄 Transferts",
         "⚽ Capitaine",
-        "🏆 Elite Consensus",
     ],
     index=0
 )
@@ -767,23 +765,6 @@ elif page == "⚽ Capitaine":
         "× elo_win_prob\n"
         "× chance_of_playing\n"
         "× (1 / FDR_next)"
-    )
-
-elif page == "🏆 Elite Consensus":
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("🏆 Top Managers")
-    ec_n_sidebar = st.sidebar.select_slider(
-        "Nombre de managers à analyser",
-        options=[100, 200, 300, 500, 1000],
-        value=300,
-        key="sb_ec_n"
-    )
-    st.sidebar.caption(
-        "Analyse les équipes réelles des top managers "
-        "mondiaux (ligue Overall) : capitaine, ownership "
-        "et tendances de transferts.\n\n"
-        "⚠️ Le scraping respecte un rate limit strict "
-        "(~1-2 requêtes/s) — plus N est grand, plus c'est long."
     )
 
 
@@ -1762,161 +1743,3 @@ elif page == "⚽ Capitaine":
             st.write(f"**FDR :** {vice_cap['fdr_next']} | **Forme :** {vice_cap['form']}")
             st.write(f"**Dispo :** {vice_cap['chance_of_playing']}%")
             st.metric("Score capitaine", f"{vice_cap['captain_score']:.3f}")
-
-
-# ============================================================
-# --- 9. PAGE : ELITE CONSENSUS ---
-# ============================================================
-
-elif page == "🏆 Elite Consensus":
-
-    ec_gw = get_current_gw()
-    ec_n = st.session_state.get('sb_ec_n', 300)
-
-    st.title("🏆 Elite Consensus")
-    st.info(f"📡 Basé sur les équipes réelles des **top {ec_n} managers mondiaux** — GW{ec_gw}")
-
-    col_ec_refresh, col_ec_status = st.columns([1, 3])
-    with col_ec_refresh:
-        ec_refresh_clicked = st.button("🔄 Rafraîchir les données", key="ec_refresh_btn")
-
-    ec_cached = elite_consensus.load_cache(ec_gw)
-
-    ec_need_scrape = ec_refresh_clicked or ec_cached is None
-
-    if ec_need_scrape:
-        with col_ec_status:
-            st.warning(
-                f"Scraping en cours sur {ec_n} managers "
-                f"(rate-limité, peut prendre plusieurs minutes)..."
-            )
-        ec_progress = st.progress(0.0, text="Initialisation...")
-
-        def _ec_progress_cb(frac, label):
-            ec_progress.progress(min(max(frac, 0.0), 1.0), text=label)
-
-        consensus = elite_consensus.build_consensus(
-            ec_gw, n=ec_n, force_refresh=True, progress_callback=_ec_progress_cb
-        )
-        ec_progress.empty()
-        st.success(f"✅ Scraping terminé — {consensus.get('n_valid_managers', 0)} managers analysés.")
-    else:
-        consensus = ec_cached
-        with col_ec_status:
-            st.caption(
-                f"✅ Données en cache — {consensus.get('n_valid_managers', 0)} managers analysés "
-                f"(sur {consensus.get('n_requested', ec_n)} demandés)."
-            )
-
-    cap_list = consensus.get('captain_consensus', [])
-    own_list = consensus.get('ownership_consensus', [])
-    tr_list = consensus.get('transfer_trends', [])
-
-    st.markdown("---")
-
-    # ── SECTION CAPITAINE ──
-    st.subheader("👑 Consensus Capitaine")
-    if cap_list:
-        cols_cap_ec = st.columns(3)
-        for i, c in enumerate(cap_list[:3]):
-            cols_cap_ec[i].metric(
-                label=f"#{i + 1} {c['name']} ({c['team']})",
-                value=f"{c['pct']}%",
-                delta=f"{c['count']} managers"
-            )
-
-        df_cap_ec15 = pd.DataFrame(cap_list)[['name', 'team', 'position', 'count', 'pct']].rename(
-            columns={'name': 'Joueur', 'team': 'Équipe', 'position': 'Position',
-                     'count': 'Managers', 'pct': '% Capitaine'}
-        )
-        st.dataframe(df_cap_ec15, hide_index=True, use_container_width=True)
-    else:
-        st.info("Aucune donnée de capitainat disponible pour cette GW.")
-
-    st.markdown("---")
-
-    # ── SECTION OWNERSHIP ──
-    st.subheader("📊 Ownership Elite (≥ 50%)")
-    if own_list:
-        df_own_ec = pd.DataFrame(own_list)[['name', 'team', 'position', 'pct']].rename(
-            columns={'name': 'Joueur', 'team': 'Équipe', 'position': 'Position', 'pct': 'Ownership %'}
-        )
-        st.dataframe(df_own_ec, hide_index=True, use_container_width=True)
-    else:
-        st.info("Aucun joueur ne dépasse 50% d'ownership chez les managers élite pour cette GW.")
-
-    st.markdown("---")
-
-    # ── SECTION TRANSFERTS TENDANCE ──
-    st.subheader("🔄 Tendances Transferts — Top 20 IN")
-    if tr_list:
-        df_tr_ec = pd.DataFrame(tr_list[:20])[['name', 'team', 'position', 'count', 'pct']].rename(
-            columns={'name': 'Joueur', 'team': 'Équipe', 'position': 'Position',
-                     'count': 'Managers', 'pct': '% Achats'}
-        )
-        st.dataframe(df_tr_ec, hide_index=True, use_container_width=True)
-    else:
-        st.info("Pas de données de transferts disponibles (GW1 ou managers sans historique précédent).")
-
-    st.markdown("---")
-
-    # ── SECTION BONUS : ML vs ELITE ──
-    st.subheader("🆚 ML vs Elite")
-    st.caption(
-        "Comparaison entre les recommandations du modèle ML (V6) "
-        "et le consensus des top managers mondiaux."
-    )
-
-    with st.spinner("Chargement des prédictions V6..."):
-        df_v6_ec, v6_err_ec = get_xp_predictions()
-
-    if v6_err_ec or df_v6_ec is None or df_v6_ec.empty:
-        st.warning("⚠️ Prédictions V6 indisponibles — comparaison impossible.")
-    else:
-        # --- Capitaine : ML vs Elite ---
-        df_cap_score_ec = df_v6_ec.copy()
-        df_cap_score_ec['captain_score'] = (
-            df_cap_score_ec['xP_GW1'] * 2.0
-            * df_cap_score_ec['elo_win_prob'].clip(0.05, 0.95)
-            * (df_cap_score_ec['chance_of_playing'] / 100.0).clip(0.01, 1.0)
-            * (1.0 / df_cap_score_ec['fdr_next'].clip(1, 5).astype(float))
-        )
-        df_cap_score_ec = df_cap_score_ec.sort_values('captain_score', ascending=False).reset_index(drop=True)
-        ml_cap_ec = df_cap_score_ec.iloc[0] if len(df_cap_score_ec) else None
-        elite_cap_ec = cap_list[0] if cap_list else None
-
-        col_ml_cap, col_elite_cap = st.columns(2)
-        with col_ml_cap:
-            st.markdown("**🤖 Capitaine — Modèle ML**")
-            if ml_cap_ec is not None:
-                st.write(f"**{ml_cap_ec['name']}** ({ml_cap_ec['team']}) — xP×2 : {ml_cap_ec['xP_GW1'] * 2:.1f} pts")
-            else:
-                st.write("Non disponible")
-        with col_elite_cap:
-            st.markdown("**🌍 Capitaine — Consensus Elite**")
-            if elite_cap_ec is not None:
-                st.write(f"**{elite_cap_ec['name']}** ({elite_cap_ec['team']}) — {elite_cap_ec['pct']}% des managers")
-            else:
-                st.write("Non disponible")
-
-        if ml_cap_ec is not None and elite_cap_ec is not None:
-            if str(ml_cap_ec['name']) == str(elite_cap_ec['name']):
-                st.success(f"✅ Convergence — le modèle et l'élite s'accordent sur **{ml_cap_ec['name']}**.")
-            else:
-                st.warning(
-                    f"⚠️ Divergence — le modèle recommande **{ml_cap_ec['name']}**, "
-                    f"l'élite préfère **{elite_cap_ec['name']}**."
-                )
-
-        st.markdown("")
-
-        # --- Transferts : ML vs Elite ---
-        st.markdown("**🤖 Top 5 joueurs recommandés par le modèle (xP le plus élevé) vs tendances élite**")
-        top5_ml_ec = df_v6_ec.nlargest(5, 'xP_Total')[['name', 'team', 'xP_Total']].reset_index(drop=True)
-        elite_transfer_names_ec = {t['name'] for t in tr_list} if tr_list else set()
-
-        for _, r in top5_ml_ec.iterrows():
-            if r['name'] in elite_transfer_names_ec:
-                st.write(f"✅ **{r['name']}** ({r['team']}) — xP : {r['xP_Total']:.1f} · aussi tendance chez l'élite")
-            else:
-                st.write(f"⚠️ **{r['name']}** ({r['team']}) — xP : {r['xP_Total']:.1f} · absent du top transferts élite")
